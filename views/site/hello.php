@@ -1,0 +1,1 @@
+<h1>Hello, YII2</h1>
