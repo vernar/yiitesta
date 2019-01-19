@@ -47,6 +47,7 @@ class CategoryController extends Controller
     }
 
     public function actionSearch($text){
+        $text = \yii\helpers\Html::encode($text);
         $products = new Product();
         return $this->render('view',
             [
