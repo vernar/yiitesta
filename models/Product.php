@@ -51,12 +51,15 @@ class Product extends ActiveRecord
 
 
     public function getProductsByCategory($codeCategory){
-        $productsByCategory = $products = Product::find()
-            ->select('product.*, category.*')
-            ->joinWith('category')
-            ->where(['category' => $codeCategory])
-            ->all();
-
+        $productsByCategory = Yii::$app->cache->get('products_category');
+        if (!$productsByCategory) {
+            $productsByCategory = $products = Product::find()
+                ->select('product.*, category.*')
+                ->joinWith('category')
+                ->where(['category' => $codeCategory])
+                ->all();
+            Yii::$app->cache->get('products_category', $productsByCategory, 10);
+        }
         return $productsByCategory;
     }
 
