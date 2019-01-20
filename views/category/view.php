@@ -1,5 +1,13 @@
 <?php use yii\helpers\Url; ?>
-<?= \app\widgets\MenuWidget::widget(); ?>
+
+<?php if (Yii::$app->controller->action->id == 'search'): ?>
+    <div style="margin-left: auto;margin-right: auto;width: 500px;" >
+        <h3>Поиск по строке: <?= Yii::$app->getRequest()->getQueryParam('text') ?></h3>
+    </div>
+
+<?php else: ?>
+    <?= \app\widgets\MenuWidget::widget(); ?>
+<?php endif ?>
     <div class="container">
         <div class="row justify-content-center">
         <?php /** @var \app\models\Product $productCollection */ ?>
