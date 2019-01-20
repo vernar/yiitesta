@@ -8,9 +8,8 @@
 
 namespace app\controllers;
 
-use app\models\Product;
-use phpDocumentor\Reflection\Types\Integer;
 use yii\web\Controller;
+use app\models\Product;
 use app\models\Translate;
 
 class CategoryController extends Controller
