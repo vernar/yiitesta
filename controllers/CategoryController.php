@@ -11,14 +11,17 @@ namespace app\controllers;
 use yii\web\Controller;
 use app\models\Product;
 use app\models\Translate;
+use Yii;
 
 class CategoryController extends Controller
 {
     public $translator;
+    public $title;
 
     public function __construct($id, $module, array $config = [])
     {
         $this->translator = new Translate();
+        Yii::$app->view->title = 'Категория';
         return parent::__construct($id, $module, $config);
     }
 
