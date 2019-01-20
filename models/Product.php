@@ -74,6 +74,26 @@ class Product extends ActiveRecord
             ->all();
 
         return $productsByCategory;
-
     }
+
+    public function getProductByCode($code){
+        $product = Product::find()
+            ->select('product.*, category.*')
+            ->joinWith('category')
+            ->where(['link_name' => $code])
+            ->one();
+
+        return $product;
+    }
+
+    public function getProductById($id){
+        $product = Product::find()
+            ->select('product.*, category.*')
+            ->joinWith('category')
+            ->where(['product_id' => $id])
+            ->one();
+
+        return $product;
+    }
+
 }

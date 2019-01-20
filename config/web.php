@@ -50,6 +50,7 @@ $config = [
             'rules' => [
                 'category/search/<text>' => 'category/search',
                 'category/view/<code>' => 'category/view',
+                'product/view/<code>' => 'product/view',
 
             ],
         ],

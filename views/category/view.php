@@ -1,4 +1,4 @@
-
+<?php use yii\helpers\Url; ?>
 <?= \app\widgets\MenuWidget::widget(); ?>
     <div class="container">
         <div class="row justify-content-center">
@@ -15,8 +15,10 @@
                         <div class="product-descr">Состав: <?= $product->composition ?></div>
                         <div class="product-price">Цена: <?= $product->price ?> рублей</div>
                         <div class="product-buttons">
-                            <button type="button" class="product-button__add btn btn-success">Заказать</button>
-                            <button type="button" class="product-button__more btn btn-primary">Подробнее</button>
+                            <a href="#" data-productid="<?=$product->product_id ?>" type="button" class="product-button__add btn btn-success">Заказать</a>
+                            <a type="button" href="<?= Url::to(['/product/view/', 'code' =>  $product->link_name]); ?>" class="product-button__more btn btn-primary">
+                                Подробнее
+                            </a>
                         </div>
                     </div>
                 </div>
