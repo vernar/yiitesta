@@ -50,21 +50,23 @@ class Cart extends ActiveRecord
 
     public function getTotalCount(){
         $totalCount = 0;
-        foreach ($this->session['cart'] as $productId => $count){
-            $totalCount += $count;
+        if (is_array($this->session['cart'])){
+            foreach ($this->session['cart'] as $productId => $count){
+                $totalCount += $count;
+            }
         }
-
         return $totalCount;
     }
 
     public function getTotalPrice(){
         $totalPrice = 0;
-        $products = new Product();
-        foreach ($this->session['cart'] as $productId => $count){
-            $product = $products->getProductById($productId);
-            $totalPrice += $product->price * $count;
+        if(is_array($this->session['cart'])){
+            $products = new Product();
+            foreach ($this->session['cart'] as $productId => $count){
+                $product = $products->getProductById($productId);
+                $totalPrice += $product->price * $count;
+            }
         }
-
         return $totalPrice;
     }
 

@@ -3,14 +3,12 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
+use app\models\Cart;
 
+$cart = new Cart();
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -32,7 +30,7 @@ AppAsset::register($this);
             <div class="header">
                 <a href="/">На главную</a>
                 <a href="#">Вход в админку</a>
-                <a href="#" class="cart">Корзина</a>
+                <a href="#" class="cart">Корзина <span class="cart-product-quantity">(<?=$cart->getTotalCount() ?>)</span></a>
                 <form action="<?=Url::to('/category/search') ?>" method="get">
                     <input type="text" style="padding: 5px" placeholder="Поиск..." name="text" value="<?= Yii::$app->getRequest()->getQueryParam('text') ?>">
                 </form>
@@ -54,12 +52,20 @@ AppAsset::register($this);
 
 <div id="cart" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
-    <div class="modal-content">
+    <div class="modal-content" style="padding: 40px;">
         <?= \app\widgets\CartWidget::widget(); ?>
     </div>
   </div>
 </div>
 
+
+<div id="order" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content" style="padding: 40px;">
+
+    </div>
+  </div>
+</div>
 <?php $this->endBody() ?>
 
 

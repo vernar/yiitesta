@@ -3,8 +3,14 @@ $('.cart').on('click', function (event) {
     $('#cart').modal('show');
 });
 
+topCartQtyUpdate = function(){
+    text =  $('.total-quantity').html();
+    $('.cart-product-quantity').html(text == undefined ? '(0)' : '('+text+')');
+};
+
 startCartObserver = function(){
-    $('.product-button__del').on('click', function (event) {
+    topCartQtyUpdate();
+    $('.cart-delete').on('click', function (event) {
         event.preventDefault();
         let productid = $(this).data('productid');
 
@@ -14,6 +20,7 @@ startCartObserver = function(){
             type: 'GET',
             success: function (res) {
                 $('#cart .modal-content').html(res);
+                topCartQtyUpdate();
                 startCartObserver();
             },
             error: function () {
@@ -22,23 +29,45 @@ startCartObserver = function(){
         });
     });
 
-    $('.btn-danger').on('click', function (event) {
-        event.preventDefault();
+
+    // $('.btn-next').on('click', function (event) {
+    //     event.preventDefault();
+    //     $('#cart').modal('hide');
+    //     $('#order').modal('show');
+    // });
+};
+
+clearCart = function(event){
+    event.preventDefault();
+    if (confirm("Точно очистить корзину?")){
         $.ajax({
             url: '/cart/flush',
             success: function (res) {
                 $('#cart .modal-content').html(res);
+                startCartObserver();
             },
             error: function () {
                 alert('error');
             }
         });
-    });
-
-
+    }
 };
 
-
+createOrder = function(event){
+    event.preventDefault();
+    $.ajax({
+        url: '/cart/order',
+        success: function (res) {
+            $('#order .modal-content').html(res);
+            $('#cart').modal('hide');
+            $('#order').modal('show');
+            startCartObserver();
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+};
 $('.product-button__add').on('click', function (event) {
     event.preventDefault();
     let productid = $(this).data('productid');

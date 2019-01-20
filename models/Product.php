@@ -15,6 +15,21 @@ use Yii;
 class Product extends ActiveRecord
 {
 
+    /**
+     * This is the model class for table "product".
+     *
+     * @property int $product_id
+     * @property string $category
+     * @property string $name
+     * @property string $composition
+     * @property int $price
+     * @property string $descr
+     * @property string $img
+     * @property string $link_name
+     * @property string $string
+     */
+
+
     public $category_id;
 
     public static function tableName()
