@@ -42,18 +42,20 @@
         </tbody>
     </table>
     <div class="modal-buttons" style="display: flex; padding: 15px; justify-content: space-around">
-        <a href="#" type="button" class="btn btn-danger"">Очистить корзину</a>
-        <button type=" button" class="btn btn-secondary">Продолжить
-            покупки</button>
+        <a href="#" type="button" class="btn btn-danger" onclick="clearCart(event)">Очистить корзину</a>
+        <button type=" button" class="btn btn-secondary btn-close" onclick="$('#cart').modal('hide')" >Продолжить покупки</button>
         <button type="button" class="btn btn-success btn-next">Оформить заказ</button>
     </div>
-
-
-    <script type="application/javascript">
-        window.onload = function() {
-            startCartObserver();
-        };
-    </script>
 <?php else: ?>
 <h2>Корзина пуста =(</h2>
+    <div class="modal-buttons" style="display: flex; padding: 15px; justify-content: space-around">
+        <button type=" button" class="btn btn-secondary btn-close" onclick="$('#cart').modal('hide')">Продолжить покупки</button>
+    </div>
 <?php  endif ?>
+
+
+<script type="application/javascript">
+    window.onload = function() {
+        startCartObserver();
+    };
+</script>

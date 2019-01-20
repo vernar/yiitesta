@@ -21,21 +21,20 @@ startCartObserver = function(){
             }
         });
     });
+};
 
-    $('.btn-danger').on('click', function (event) {
-        event.preventDefault();
-        $.ajax({
-            url: '/cart/flush',
-            success: function (res) {
-                $('#cart .modal-content').html(res);
-            },
-            error: function () {
-                alert('error');
-            }
-        });
+clearCart = function(event){
+    event.preventDefault();
+    $.ajax({
+        url: '/cart/flush',
+        success: function (res) {
+            $('#cart .modal-content').html(res);
+            startCartObserver();
+        },
+        error: function () {
+            alert('error');
+        }
     });
-
-
 };
 
 
