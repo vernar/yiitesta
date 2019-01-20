@@ -21,7 +21,7 @@ class CategoryController extends Controller
     public function __construct($id, $module, array $config = [])
     {
         $this->translator = new Translate();
-        Yii::$app->view->title = 'Категория';
+        Yii::$app->view->title = 'Категория ';
         return parent::__construct($id, $module, $config);
     }
 
@@ -40,6 +40,7 @@ class CategoryController extends Controller
     public function actionView($code){
         $products = new Product();
         $productCollection = $products->getProductsByCategory($code);
+        Yii::$app->view->title .= $this->translator->getTransLine($code);
         return $this->render('view',
             [
                 'productCollection' => $productCollection,
