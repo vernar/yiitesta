@@ -13,6 +13,7 @@ use app\models\Cart;
 use app\models\Order;
 use app\models\Product;
 use app\models\Translate;
+use yii\helpers\Url;
 use yii\web\Controller;
 use Yii;
 
@@ -56,8 +57,15 @@ class CartController extends Controller
                     ->setSubject('Ваш заказа №' . $this->order->order_id . ' поставлен в очередь')
                     ->send();
                 $this->cart->flushCart();
-                return $this->render('success');
+                return $this->render('success',
+                    [
+                        'order' => $this->order,
+                        'translator' => $this->translator,
+                    ]
+                );
             }
+        } else {
+            return Yii::$app->response->redirect(Url::to('/'));
         }
     }
 
