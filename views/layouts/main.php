@@ -37,7 +37,7 @@ AppAsset::register($this);
             </div>
         </div>
     </header>
-    <div class="conteiner">
+    <div class="conteiner" style="margin-left: auto;margin-right: auto;">
         <?= $content ?>
     </div>
     <footer>
