@@ -29,7 +29,12 @@ AppAsset::register($this);
         <div class="container">
             <div class="header">
                 <a href="/">На главную</a>
-                <a href="<?=Url::to('/admin/') ?>">Вход в админку</a>
+                <?php if (Yii::$app->user->isGuest): ?>
+                    <a href="<?=Url::to('/admin/index') ?>">Вход в админку</a>
+                <?php else: ?>
+                    <a href="<?=Url::to('/admin/index') ?>">Админка</a>
+                    <a href="<?=Url::to('/admin/logout') ?>">Выход из админки</a>
+                <?php endif ?>
                 <a href="#" class="cart">Корзина <span class="cart-product-quantity">(<?=$cart->getTotalCount() ?>)</span></a>
                 <form action="<?=Url::to('/category/search') ?>" method="get">
                     <input type="text" style="padding: 5px" placeholder="Поиск..." name="text" value="<?= Yii::$app->getRequest()->getQueryParam('text') ?>">
