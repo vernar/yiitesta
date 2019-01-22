@@ -52,4 +52,17 @@ class OrderProduct extends \yii\db\ActiveRecord
             'sum' => 'Sum',
         ];
     }
+
+    public function getOrder()
+    {
+        return $this->hasOne(Order::class, ['order_id' => 'order_id']);
+    }
+
+    public function getProductCollectionByOrderId($orderId){
+        $productCollection = OrderProduct::find()
+            ->where(['order_id' => $orderId])
+            ->all();
+        return $productCollection;
+    }
+
 }

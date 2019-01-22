@@ -68,7 +68,7 @@ class Product extends ActiveRecord
     public function getProductsByCategory($codeCategory){
         $productsByCategory = Yii::$app->cache->get('products_category');
         if (!$productsByCategory) {
-            $productsByCategory = $products = Product::find()
+            $productsByCategory = Product::find()
                 ->select('product.*, category.*')
                 ->joinWith('category')
                 ->where(['category' => $codeCategory])
@@ -79,7 +79,7 @@ class Product extends ActiveRecord
     }
 
     public function getProductBySearch($text){
-        $productsByCategory = $products = Product::find()
+        $productsByCategory = Product::find()
             ->select('product.*, category.*')
             ->joinWith('category')
             ->joinWith('translate')
@@ -101,7 +101,8 @@ class Product extends ActiveRecord
         return $product;
     }
 
-    public function getProductById($id){
+    public function getProductById($id)
+    {
         $product = Product::find()
             ->select('product.*, category.*')
             ->joinWith('category')
