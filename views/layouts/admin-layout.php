@@ -4,12 +4,12 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use app\assets\AppAsset;
+use app\assets\AdminAppAsset;
 use yii\helpers\Url;
 use app\models\Cart;
 
 $cart = new Cart();
-AppAsset::register($this);
+AdminAppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -30,14 +30,13 @@ AppAsset::register($this);
             <div class="header">
                 <a href="/">На главную</a>
                 <a href="<?=Url::to('/admin/') ?>">Вход в админку</a>
-                <a href="#" class="cart">Корзина <span class="cart-product-quantity">(<?=$cart->getTotalCount() ?>)</span></a>
                 <form action="<?=Url::to('/category/search') ?>" method="get">
                     <input type="text" style="padding: 5px" placeholder="Поиск..." name="text" value="<?= Yii::$app->getRequest()->getQueryParam('text') ?>">
                 </form>
             </div>
         </div>
     </header>
-    <div class="conteiner" style="margin-left: auto;margin-right: auto;">
+    <div class="conteiner" style="width:1100px; margin-left: auto;margin-right: auto;">
         <?= $content ?>
     </div>
     <footer>
@@ -48,27 +47,7 @@ AppAsset::register($this);
         </div>
     </footer>
 </section>
-
-
-<div id="cart" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content" style="padding: 40px;">
-        <?= \app\widgets\CartWidget::widget(); ?>
-    </div>
-  </div>
-</div>
-
-
-<div id="order" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content" style="padding: 40px;">
-
-    </div>
-  </div>
-</div>
 <?php $this->endBody() ?>
-
-
 </body>
 </html>
 <?php $this->endPage() ?>
