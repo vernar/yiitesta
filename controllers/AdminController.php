@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\LoginForm;
 use Yii;
 use app\models\Order;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -15,10 +18,14 @@ use yii\filters\VerbFilter;
 class AdminController extends Controller
 {
 
-    public function __construct($id, $module, array $config = [])
+    public function beforeAction($action)
     {
         $this->layout = 'admin-layout';
-        parent::__construct($id, $module, $config);
+        if(Yii::$app->user->isGuest &&
+            $this->action->id != 'login'){
+            return Yii::$app->response->redirect(Url::to('/admin/login/'));
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -27,13 +34,58 @@ class AdminController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
+                    'logout' => ['GET'],
                     'delete' => ['POST'],
                 ],
             ],
         ];
+    }
+     /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+
+    /**
+     * Login action.
+     *
+     * @return Response|string
+     */
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return Yii::$app->response->redirect(Url::to('/admin/index/'));
+        }
+
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     /**
