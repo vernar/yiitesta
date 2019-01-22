@@ -81,13 +81,26 @@ class CartController extends Controller
                     ->setSubject('Ваш заказ №' . $this->order->order_id . ' поставлен в очередь')
                     ->send();
                 $this->cart->flushCart();
-                return $this->render('success',
-                    [
-                        'order' => $this->order,
-                        'translator' => $this->translator,
-                    ]
-                );
+                $session = Yii::$app->session;
+                $session->setFlash('order', $this->order);
+                return Yii::$app->response->redirect(Url::to('/cart/success/'));
+
             }
+        } else {
+            return Yii::$app->response->redirect(Url::to('/'));
+        }
+    }
+
+    public function actionSuccess(){
+        $session = Yii::$app->session;
+        $order = $session->getFlash('order');
+        if (isset($order)){
+            return $this->render('success',
+                [
+                    'order' => $order,
+                    'translator' => $this->translator,
+                ]
+            );
         } else {
             return Yii::$app->response->redirect(Url::to('/'));
         }
