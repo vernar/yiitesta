@@ -34,7 +34,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['name', 'email', 'phone', 'address'], 'required'],
             [['email'], 'email'],
-            [['name', 'email', 'phone', 'address'], 'string', 'max' => 255],
+            [['name', 'email', 'phone', 'address', 'status'], 'string', 'max' => 255],
             [['quantity'], 'safe'],
         ];
     }
