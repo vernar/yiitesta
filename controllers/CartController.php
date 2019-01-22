@@ -11,9 +11,11 @@ namespace app\controllers;
 
 use app\models\Cart;
 use app\models\Order;
+use app\models\OrderProduct;
 use app\models\Product;
 use app\models\Translate;
 use yii\helpers\Url;
+use yii\swiftmailer\Mailer;
 use yii\web\Controller;
 use Yii;
 
@@ -24,6 +26,7 @@ class CartController extends Controller
     public $cart;
     public $product;
     public $order;
+    public $orderProduct;
 
     public function __construct($id, $module, array $config = [])
     {
@@ -31,6 +34,7 @@ class CartController extends Controller
         $this->cart = new Cart();
         $this->product = new Product();
         $this->order = new Order();
+        $this->orderProduct = new OrderProduct();
         return parent::__construct($id, $module, $config);
     }
 
@@ -49,12 +53,32 @@ class CartController extends Controller
             $this->order->date = date('Y-m-d H:i:s');
             $this->order->sum = $this->cart->getTotalPrice();
             if($this->order->save()){
-                Yii::$app->mailer
-                    ->compose()
+
+                foreach($this->cart->getCartArray() as $productId => $productCount){
+                    /** @var Product $product */
+                    $product = $this->product->getProductById($productId);
+
+                    $orderProductSave = new OrderProduct();
+                    $orderProductSave->order_id = $this->order->order_id;
+                    $orderProductSave->product_id = $productId;
+                    $orderProductSave->name = $product->name;
+                    $orderProductSave->price = $product->price;
+                    $orderProductSave->quantity = $productCount;
+                    $orderProductSave->sum = $product->price * $productCount;
+                    $orderProductSave->save();
+                }
+
+                Yii::$app->mail
+                    ->compose('order_mail',
+                        [
+                            'order' => $this->order,
+                            'orderProduct' => $this->orderProduct,
+                            'translator' => $this->translator,
+                        ])
                     ->setCharset('utf-8')
                     ->setFrom(['admin@shop.com' => 'Admin Rutovich'])
                     ->setTo($this->order->email)
-                    ->setSubject('Ваш заказа №' . $this->order->order_id . ' поставлен в очередь')
+                    ->setSubject('Ваш заказ №' . $this->order->order_id . ' поставлен в очередь')
                     ->send();
                 $this->cart->flushCart();
                 return $this->render('success',

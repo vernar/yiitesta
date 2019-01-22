@@ -35,6 +35,7 @@ class Order extends \yii\db\ActiveRecord
             [['name', 'email', 'phone', 'address'], 'required'],
             [['email'], 'email'],
             [['name', 'email', 'phone', 'address'], 'string', 'max' => 255],
+            [['quantity'], 'safe'],
         ];
     }
 
@@ -49,9 +50,32 @@ class Order extends \yii\db\ActiveRecord
             'name' => 'Имя',
             'email' => 'E-mail',
             'phone' => 'Телефон',
-            'address' => 'Адресс',
+            'address' => 'Адрес',
             'sum' => 'Sum',
             'status' => 'Status',
         ];
+    }
+
+    public function getOrderProduct()
+    {
+        return $this->hasMany(OrderProduct::class, ['order_id' => 'order_id']);
+    }
+
+    public function getTotalProductQuantityByOrderId($orderId){
+//        $productQuote = Order::find()
+//            ->select('order.*,order_product.*')
+//            ->joinWith('orderProduct')
+//            ->where(["order_product.order_id" => $orderId])
+//            ->all();
+
+        $totalOrderQuantity = 0;
+        $productQuote = OrderProduct::find()
+            ->where(["order_product.order_id" => $orderId])
+            ->all();
+
+        foreach ($productQuote as $item) {
+            $totalOrderQuantity += $item->quantity;
+        }
+        return $totalOrderQuantity;
     }
 }
