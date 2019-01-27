@@ -13,7 +13,7 @@
                 <div class="product-descr">Описание: <?= $product->descr ?></div>
                 <div class="product-price">Цена: <?= $product->price ?></div>
                 <div class="product-buttons">
-                    <button type="button" class="product-button__add btn btn-success">Заказать</button>
+                    <button type="button" data-productid="<?=$product->product_id ?>" class="product-button__add btn btn-success">Заказать</button>
                 </div>
             </div>
         </div>
